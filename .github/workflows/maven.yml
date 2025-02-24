@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-release:
 
     runs-on: ubuntu-latest
 
@@ -26,8 +26,24 @@ jobs:
       run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
       id: project
 
+    - name: Put version to github env
+      run: |
+        echo "version_name=${{steps.project.outputs.version}}" >> $GITHUB_ENV
+
+
     - name: Upload jar to Github Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: target
-        path: target/pinger-${{ steps.project.outputs.version }}.jar
+        path: target/pinger-${{ steps.project.outputs.version_name }}.jar
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{env.version_name}}
+        release_name: v${{env.version_name}}
+        draft: false
+        prerelease: false
