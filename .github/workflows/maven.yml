@@ -30,13 +30,6 @@ jobs:
       run: |
         echo "version_name=${{steps.project.outputs.version_name}}" >> $GITHUB_ENV
 
-
-    - name: Upload jar to Github Artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: target
-        path: target/pinger-${{ steps.project.outputs.version_name }}.jar
-
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
