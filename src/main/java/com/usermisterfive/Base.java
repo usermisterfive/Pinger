@@ -45,7 +45,7 @@ public class Base {
   }
   SystemTray.getSystemTray().remove(trayIcon);
  }
- static boolean test(int timeout, Reachable reachable1) {
+ private static boolean test(int timeout, Reachable reachable1) {
   boolean reachable;
   String reachableWord = "";
   reachable = reachable1.isReachable(host, 443, timeout);;
