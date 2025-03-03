@@ -1,7 +1,13 @@
 package com.usermisterfive;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.AWTException;
+import java.awt.Image;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
+import javax.swing.ImageIcon;
+
 import java.net.URL;
 import java.util.Objects;
 
@@ -10,12 +16,18 @@ public class Base {
  private static final String host = "1.1.1.1";
  private boolean running;
  public static void main(String[] args) {
-  Base base = new Base();
+  final Base base = new Base();
   base.setRunning(true);
-  Reachable reachable = Reachables.get();
+  final Reachable reachable = Reachables.get();
 
-  TrayIcon trayIcon = new TrayIcon(Objects.requireNonNull(
+  final TrayIcon trayIcon = new TrayIcon(Objects.requireNonNull(
     createImage("unknown.png")));
+  final MenuItem exitMenuItem = new MenuItem("Exit");
+  exitMenuItem.addActionListener(actionEvent -> base.setRunning(false));
+  final PopupMenu popupMenu = new PopupMenu();
+  popupMenu.add(exitMenuItem);
+  trayIcon.setPopupMenu(popupMenu);
+
   try {
    SystemTray.getSystemTray().add(trayIcon);
   } catch (AWTException awtException) {
@@ -31,6 +43,7 @@ public class Base {
    testAndAssignImage(trayIcon, reachable);
 
   }
+  SystemTray.getSystemTray().remove(trayIcon);
  }
  static boolean test(int timeout, Reachable reachable1) {
   boolean reachable;
