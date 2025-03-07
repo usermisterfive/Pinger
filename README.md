@@ -10,7 +10,7 @@
 
 ## Supported Java versions
 
->=11
+11 and later
 
 ## Launch instructions
 
