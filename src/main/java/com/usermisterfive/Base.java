@@ -34,18 +34,18 @@ public class Base {
    System.out.println(awtException);
   }
   final int PAUSE = 1000;
-  int timeout = PAUSE;
+  int pause1 = PAUSE;
   while (base.isRunning()) {
    try {
-    Thread.sleep(timeout);
+    Thread.sleep(pause1);
    } catch(InterruptedException interruptedException) {
     System.out.println(interruptedException);
    }
    int timeouts = testAndAssignImage(trayIcon, reachable);
    if (timeouts > PAUSE) {
-    timeout = 0;
+    pause1 = 0;
    } else {
-    timeout = PAUSE - timeouts;
+    pause1 = PAUSE - timeouts;
    }
   }
   SystemTray.getSystemTray().remove(trayIcon);
@@ -74,37 +74,45 @@ public class Base {
  }
  private static int testAndAssignImage(TrayIcon trayIcon, Reachable reachable) {
   int timeouts = 0;
-  if (test(1, reachable)) {
-   trayIcon.setImage(createImage("1.png"));
+  int one = 1;
+  int two = 2;
+  int three = 3;
+  int four = 4;
+  int five = 5;
+  int ten = 10;
+  int hundred = 100;
+  int thousand = 1000;
+  if (test(one, reachable)) {
+   trayIcon.setImage(createImage(one + ".png"));
   }
-  else if (test(2, reachable)) {
-   timeouts += 1;
-   trayIcon.setImage(createImage("2.png"));
+  else if (test(two, reachable)) {
+   timeouts += one;
+   trayIcon.setImage(createImage(two + ".png"));
   }
-  else if (test(3, reachable)) {
-   timeouts += 2;
-   trayIcon.setImage(createImage("3.png"));
+  else if (test(three, reachable)) {
+   timeouts += two;
+   trayIcon.setImage(createImage(three + ".png"));
   }
-  else if (test(4, reachable)) {
-   timeouts += 3;
-   trayIcon.setImage(createImage("4.png"));
+  else if (test(four, reachable)) {
+   timeouts += three;
+   trayIcon.setImage(createImage(four + ".png"));
   }
-  else if (test(5, reachable)) {
-   timeouts += 4;
-   trayIcon.setImage(createImage("5.png"));
+  else if (test(five, reachable)) {
+   timeouts += four;
+   trayIcon.setImage(createImage(five + ".png"));
   }
-  else if (test(10, reachable)) {
-   timeouts += 5;
-   trayIcon.setImage(createImage("10.png"));
-  } else if (test(100, reachable)) {
-   timeouts += 10;
-   trayIcon.setImage(createImage("100.png"));
+  else if (test(ten, reachable)) {
+   timeouts += five;
+   trayIcon.setImage(createImage(ten + ".png"));
+  } else if (test(hundred, reachable)) {
+   timeouts += ten;
+   trayIcon.setImage(createImage(hundred + ".png"));
 
-  } else if (test(1000, reachable)) {
-   timeouts += 100;
-   trayIcon.setImage(createImage("1000.png"));
+  } else if (test(thousand, reachable)) {
+   timeouts += hundred;
+   trayIcon.setImage(createImage(thousand + ".png"));
   } else {
-   timeouts += 1000;
+   timeouts += thousand;
    trayIcon.setImage(createImage("unknown.png"));
   }
   return timeouts;
