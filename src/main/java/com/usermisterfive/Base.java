@@ -15,6 +15,7 @@ import java.util.Objects;
 public class Base {
  private static final String host = "1.1.1.1";
  private boolean running;
+ @SuppressWarnings({"ThrowablePrintedToSystemOut", "BusyWait"})
  public static void main(String[] args) {
   final Base base = new Base();
   base.setRunning(true);
@@ -53,7 +54,7 @@ public class Base {
  private static boolean test(int timeout, Reachable reachable1) {
   boolean reachable;
   String reachableWord = "";
-  reachable = reachable1.isReachable(host, 443, timeout);;
+  reachable = reachable1.isReachable(host, 443, timeout);
   if (!reachable) {
    reachableWord = "not ";
   }
