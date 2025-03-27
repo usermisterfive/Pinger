@@ -9,12 +9,16 @@ import java.awt.TrayIcon;
 import javax.swing.ImageIcon;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
 public class Base {
- private static final String host = "1.1.1.1";
+ private static final String HOST = "1.1.1.1";
  private boolean running;
+ private final static List<Integer> TIMEOUTS_LIST = new ArrayList<>();
+
  @SuppressWarnings({"ThrowablePrintedToSystemOut", "BusyWait"})
  public static void main(String[] args) {
   final Base base = new Base();
@@ -29,40 +33,62 @@ public class Base {
   popupMenu.add(exitMenuItem);
   trayIcon.setPopupMenu(popupMenu);
 
+  TIMEOUTS_LIST.add(1);
+  TIMEOUTS_LIST.add(2);
+  TIMEOUTS_LIST.add(3);
+  TIMEOUTS_LIST.add(4);
+  TIMEOUTS_LIST.add(5);
+  TIMEOUTS_LIST.add(10);
+  TIMEOUTS_LIST.add(20);
+  TIMEOUTS_LIST.add(30);
+  TIMEOUTS_LIST.add(40);
+  TIMEOUTS_LIST.add(50);
+  TIMEOUTS_LIST.add(60);
+  TIMEOUTS_LIST.add(70);
+  TIMEOUTS_LIST.add(80);
+  TIMEOUTS_LIST.add(90);
+  TIMEOUTS_LIST.add(100);
+  TIMEOUTS_LIST.add(1000);
+
   try {
    SystemTray.getSystemTray().add(trayIcon);
   } catch (AWTException awtException) {
    System.out.println(awtException);
   }
+
   final int PAUSE = 1000;
   int pause1 = PAUSE;
+
   while (base.isRunning()) {
    try {
     Thread.sleep(pause1);
    } catch(InterruptedException interruptedException) {
     System.out.println(interruptedException);
    }
-   int timeouts = testAndAssignImage(trayIcon, reachable);
-   if (timeouts > PAUSE) {
+   int timeoutsSum = testAndAssignImage(trayIcon, reachable);
+   if (timeoutsSum > PAUSE) {
     pause1 = 0;
    } else {
-    pause1 = PAUSE - timeouts;
+    pause1 = PAUSE - timeoutsSum;
    }
   }
+
   SystemTray.getSystemTray().remove(trayIcon);
  }
+
  private static boolean test(int timeout, Reachable reachable1) {
   boolean reachable;
   String reachableWord = "";
-  reachable = reachable1.isReachable(host, 443, timeout);
+  reachable = reachable1.isReachable(HOST, 443, timeout);
   if (!reachable) {
    reachableWord = "not ";
   }
-  System.out.println(host + " is " + reachableWord + "reachable within "
+  System.out.println(HOST + " is " + reachableWord + "reachable within "
     + timeout + " ms");
 
   return reachable;
  }
+
  private static Image createImage(String path) {
   URL imageURL = Base.class.getClassLoader().getResource(path);
 
@@ -73,50 +99,40 @@ public class Base {
    return (new ImageIcon(imageURL, "")).getImage();
   }
  }
- private static int testAndAssignImage(TrayIcon trayIcon, Reachable reachable) {
-  int timeouts = 0;
-  int one = 1;
-  int two = 2;
-  int three = 3;
-  int four = 4;
-  int five = 5;
-  int ten = 10;
-  int hundred = 100;
-  int thousand = 1000;
-  if (test(one, reachable)) {
-   trayIcon.setImage(createImage(one + ".png"));
-  }
-  else if (test(two, reachable)) {
-   timeouts += one;
-   trayIcon.setImage(createImage(two + ".png"));
-  }
-  else if (test(three, reachable)) {
-   timeouts += two;
-   trayIcon.setImage(createImage(three + ".png"));
-  }
-  else if (test(four, reachable)) {
-   timeouts += three;
-   trayIcon.setImage(createImage(four + ".png"));
-  }
-  else if (test(five, reachable)) {
-   timeouts += four;
-   trayIcon.setImage(createImage(five + ".png"));
-  }
-  else if (test(ten, reachable)) {
-   timeouts += five;
-   trayIcon.setImage(createImage(ten + ".png"));
-  } else if (test(hundred, reachable)) {
-   timeouts += ten;
-   trayIcon.setImage(createImage(hundred + ".png"));
 
-  } else if (test(thousand, reachable)) {
-   timeouts += hundred;
-   trayIcon.setImage(createImage(thousand + ".png"));
-  } else {
-   timeouts += thousand;
-   trayIcon.setImage(createImage("unknown.png"));
+ private static int testAndAssignImage(TrayIcon trayIcon, Reachable reachable) {
+  int timeoutsSum = 0;
+
+  boolean isReached = false;
+
+  for (int iteration = 0; iteration < TIMEOUTS_LIST.size(); iteration++) {
+   if (TIMEOUTS_LIST.get(iteration).equals(TIMEOUTS_LIST.get(0))
+     && test(TIMEOUTS_LIST.get(iteration), reachable)) {
+    isReached = true;
+    trayIcon.setImage(createImage(TIMEOUTS_LIST.get(iteration)+ ".png"));
+    break;
+   } else if (!TIMEOUTS_LIST.get(iteration).equals(TIMEOUTS_LIST.get(0))
+     && test(TIMEOUTS_LIST.get(iteration), reachable)) {
+    isReached = true;
+
+    for (int timeout : TIMEOUTS_LIST.subList(0, iteration)) {
+     timeoutsSum += timeout;
+    }
+    trayIcon.setImage(createImage(TIMEOUTS_LIST.get(iteration) + ".png"));
+    break;
+   }
   }
-  return timeouts;
+
+  if (!isReached) {
+   trayIcon.setImage(createImage("unknown.png"));
+   for (int timeout : TIMEOUTS_LIST) {
+    timeoutsSum += timeout;
+   }
+  }
+
+  System.out.println("timeoutsSum=" + timeoutsSum);
+
+  return timeoutsSum;
  }
 
  public boolean isRunning() {
