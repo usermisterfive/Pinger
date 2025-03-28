@@ -8,6 +8,7 @@ import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import javax.swing.ImageIcon;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,8 @@ import java.util.Objects;
 public class Base {
  private static final String HOST = "1.1.1.1";
  private boolean running;
- private final static List<Integer> TIMEOUTS_LIST = new ArrayList<>();
+ private static final List<Integer> TIMEOUTS_LIST = new ArrayList<>();
+ private static final Image UNKNOWN_IMAGE = createImage("unknown.png");
 
  @SuppressWarnings({"ThrowablePrintedToSystemOut", "BusyWait"})
  public static void main(String[] args) {
@@ -25,8 +27,7 @@ public class Base {
   base.setRunning(true);
   final Reachable reachable = Reachables.get();
 
-  final TrayIcon trayIcon = new TrayIcon(Objects.requireNonNull(
-    createImage("unknown.png")));
+  final TrayIcon trayIcon = new TrayIcon(Objects.requireNonNull(UNKNOWN_IMAGE));
   final MenuItem exitMenuItem = new MenuItem("Exit");
   exitMenuItem.addActionListener(actionEvent -> base.setRunning(false));
   final PopupMenu popupMenu = new PopupMenu();
@@ -60,12 +61,14 @@ public class Base {
   int pause1 = PAUSE;
 
   while (base.isRunning()) {
+   int timeoutsSum = 0;
    try {
     Thread.sleep(pause1);
-   } catch(InterruptedException interruptedException) {
-    System.out.println(interruptedException);
+    timeoutsSum = testAndAssignImage(trayIcon, reachable);
+   } catch(InterruptedException | IOException exception) {
+    System.out.println(exception);
+    trayIcon.setImage(UNKNOWN_IMAGE);
    }
-   int timeoutsSum = testAndAssignImage(trayIcon, reachable);
    if (timeoutsSum > PAUSE) {
     pause1 = 0;
    } else {
@@ -76,7 +79,8 @@ public class Base {
   SystemTray.getSystemTray().remove(trayIcon);
  }
 
- private static boolean test(int timeout, Reachable reachable1) {
+ private static boolean test(int timeout, Reachable reachable1)
+   throws IOException {
   boolean reachable;
   String reachableWord = "";
   reachable = reachable1.isReachable(HOST, 443, timeout);
@@ -100,7 +104,8 @@ public class Base {
   }
  }
 
- private static int testAndAssignImage(TrayIcon trayIcon, Reachable reachable) {
+ private static int testAndAssignImage(TrayIcon trayIcon, Reachable reachable)
+   throws IOException {
   int timeoutsSum = 0;
 
   boolean isReached = false;
@@ -124,7 +129,7 @@ public class Base {
   }
 
   if (!isReached) {
-   trayIcon.setImage(createImage("unknown.png"));
+   trayIcon.setImage(UNKNOWN_IMAGE);
    for (int timeout : TIMEOUTS_LIST) {
     timeoutsSum += timeout;
    }
