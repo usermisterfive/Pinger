@@ -10,7 +10,6 @@ import javax.swing.ImageIcon;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,7 +17,8 @@ import java.util.Objects;
 public class Base {
  private static final String HOST = "1.1.1.1";
  private boolean running;
- private static final List<Integer> TIMEOUTS_LIST = new ArrayList<>();
+ private static final List<Integer> TIMEOUTS_LIST = List
+   .of(1, 2, 3, 4, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 1000);
  private static final Image UNKNOWN_IMAGE = createImage("unknown.png");
 
  @SuppressWarnings({"ThrowablePrintedToSystemOut", "BusyWait"})
@@ -33,23 +33,6 @@ public class Base {
   final PopupMenu popupMenu = new PopupMenu();
   popupMenu.add(exitMenuItem);
   trayIcon.setPopupMenu(popupMenu);
-
-  TIMEOUTS_LIST.add(1);
-  TIMEOUTS_LIST.add(2);
-  TIMEOUTS_LIST.add(3);
-  TIMEOUTS_LIST.add(4);
-  TIMEOUTS_LIST.add(5);
-  TIMEOUTS_LIST.add(10);
-  TIMEOUTS_LIST.add(20);
-  TIMEOUTS_LIST.add(30);
-  TIMEOUTS_LIST.add(40);
-  TIMEOUTS_LIST.add(50);
-  TIMEOUTS_LIST.add(60);
-  TIMEOUTS_LIST.add(70);
-  TIMEOUTS_LIST.add(80);
-  TIMEOUTS_LIST.add(90);
-  TIMEOUTS_LIST.add(100);
-  TIMEOUTS_LIST.add(1000);
 
   try {
    SystemTray.getSystemTray().add(trayIcon);
