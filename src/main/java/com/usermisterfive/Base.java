@@ -76,7 +76,7 @@ public class Base {
   return reachable;
  }
 
- private static Image createImage(String path) {
+ public static Image createImage(String path) {
   URL imageURL = Base.class.getClassLoader().getResource(path);
 
   if (imageURL == null) {
