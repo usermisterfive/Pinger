@@ -23,7 +23,7 @@ jobs:
 
     - name: Extract Maven project version
 #      run: echo ::set-output name=version_name::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
-      run: echo "{version_name}={$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)}" >> $GITHUB_OUTPUT
+      run: echo {version_name}={$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)} >> $GITHUB_OUTPUT
       id: project
 
 #    - name: Set output
