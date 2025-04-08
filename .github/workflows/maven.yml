@@ -22,8 +22,8 @@ jobs:
       run: mvn -B package --file pom.xml
 
     - name: Extract Maven project version
-      run: echo ::set-output name=version_name::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
-#      run: echo {version_name}={$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)} >> $GITHUB_OUTPUT
+#      run: echo ::set-output name=version_name::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+      run: echo {version_name}={$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)} >> $GITHUB_ENV
       id: project
 
 #    - name: Set output
@@ -31,28 +31,31 @@ jobs:
 #    - name: Set output
 #      run: echo "{name}={value}" >> $GITHUB_OUTPUT
 
-    - name: Put version to github env
-      run: |
-        echo "version_name=${{steps.project.outputs.version_name}}" >> $GITHUB_ENV
+    - name: Test variable
+      run: echo ${{env.version_name}}
 
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: v${{env.version_name}}
-        release_name: v${{env.version_name}}
-        draft: false
-        prerelease: false
-
-    - name: Upload jar to Release
-      id: upload-release-asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./target/pinger-${{ steps.project.outputs.version_name }}.jar
-        asset_name: pinger-${{ steps.project.outputs.version_name }}.jar
-        asset_content_type: application/zip
+#    - name: Put version to github env
+#      run: |
+#        echo "version_name=${{steps.project.outputs.version_name}}" >> $GITHUB_ENV
+#
+#    - name: Create Release
+#      id: create_release
+#      uses: actions/create-release@v1
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        tag_name: v${{env.version_name}}
+#        release_name: v${{env.version_name}}
+#        draft: false
+#        prerelease: false
+#
+#    - name: Upload jar to Release
+#      id: upload-release-asset
+#      uses: actions/upload-release-asset@v1
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        upload_url: ${{ steps.create_release.outputs.upload_url }}
+#        asset_path: ./target/pinger-${{ steps.project.outputs.version_name }}.jar
+#        asset_name: pinger-${{ steps.project.outputs.version_name }}.jar
+#        asset_content_type: application/zip
