@@ -19,7 +19,7 @@ jobs:
           cache: maven
 
       - name: test gh
-        run:
+        run: |
           gh
           gh status
 
