@@ -22,8 +22,8 @@ jobs:
         run: |
           gh repo view
           gh
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        env:
+#          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 #      - name: Build with Maven
 #        run: mvn -B package --file pom.xml
