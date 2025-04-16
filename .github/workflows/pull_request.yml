@@ -20,7 +20,8 @@ jobs:
 
       - name: test gh
         run: |
-          gh status
+          gh repo view
+#          gh status
 #          gh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
