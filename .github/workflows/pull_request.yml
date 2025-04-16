@@ -19,7 +19,9 @@ jobs:
           cache: maven
 
       - name: test gh
-        run: gh
+        run:
+          gh
+          gh status
 
 #      - name: Build with Maven
 #        run: mvn -B package --file pom.xml
