@@ -24,7 +24,10 @@ jobs:
 
       - run: |
           gh release create v${{ env.VERSION_NAME }}
-          gh release view v${{ env.VERSION_NAME }} --json uploadUrl
+
+#          gh release view v${{ env.VERSION_NAME }} --json uploadUrl --template
+#          https://cli.github.com/manual/gh_help_formatting
+
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
