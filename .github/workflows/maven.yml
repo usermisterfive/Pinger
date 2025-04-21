@@ -19,7 +19,7 @@ jobs:
         cache: maven
 
     - name: Build with Maven
-      run: mvn package pom.xml
+      run: mvn package
 
     - name: Extract Maven project version
       run: echo version_name=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec) >> $GITHUB_ENV
