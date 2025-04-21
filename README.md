@@ -2,7 +2,7 @@
 
 ## Build 
 
-![workflow](https://github.com/usermisterfive/Pinger/actions/workflows/maven.yml/badge.svg)
+![workflow](https://github.com/usermisterfive/Pinger/actions/workflows/push.yml/badge.svg)
 
 ## Demo
 
