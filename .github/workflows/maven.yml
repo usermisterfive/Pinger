@@ -22,8 +22,10 @@ jobs:
       run: mvn -B package --file pom.xml
 
     - name: Extract Maven project version
-      run: echo version_name=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec) >> $GITHUB_ENV
+      run: echo VERSION_NAME=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec) >> $GITHUB_ENV
       id: project
+
+    - run: echo ${{ env.VERSION_NAME }}
 
 #    - name: Create Release
 #      run: |
