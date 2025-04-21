@@ -23,6 +23,7 @@ jobs:
 
       - run: |
           gh release create v${{ env.VERSION_NAME }}
+          gh release view v${{ env.VERSION_NAME }} --json uploadUrl
           gh release view v${{ env.VERSION_NAME }} --json uploadUrl --jq '.uploadUrl'
 
         env:
