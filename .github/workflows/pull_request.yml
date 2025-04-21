@@ -26,6 +26,7 @@ jobs:
           gh release create v${{ env.VERSION_NAME }}
 
 #          gh release view v${{ env.VERSION_NAME }} --json uploadUrl --template
+          gh release view v${{ env.VERSION_NAME }} --json uploadUrl --jq '.uploadUrl'
 #          https://cli.github.com/manual/gh_help_formatting
 
         env:
