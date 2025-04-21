@@ -23,11 +23,13 @@ jobs:
 
       - run: |
           gh release create v${{ env.VERSION_NAME }}
-          gh release view v${{ env.VERSION_NAME }} --json uploadUrl
-          gh release view v${{ env.VERSION_NAME }} --json uploadUrl --jq '.uploadUrl'
+          echo UPLOAD_URL=$(gh release view v${{ env.VERSION_NAME }} --json uploadUrl --jq '.uploadUrl') >> $GITHUB_ENV
 
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - run:
+          echo ${{ env.UPLOAD_URL }}
 
 #      - name: Build with Maven
 #        run: mvn -B package --file pom.xml
