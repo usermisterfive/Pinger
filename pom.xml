@@ -6,7 +6,7 @@
 
  <groupId>org.usermisterfive</groupId>
  <artifactId>pinger</artifactId>
- <version>5.5.21</version>
+ <version>5.5.22</version>
 
  <properties>
   <maven.compiler.source>11</maven.compiler.source>
