@@ -24,14 +24,7 @@ jobs:
     - name: Extract Maven project version
       run: echo VERSION_NAME=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec) >> $GITHUB_ENV
 
-    - name: Create Release
-      run: |
-        gh release create v${{ env.VERSION_NAME }}
-        echo UPLOAD_URL=$(gh release view v${{ env.VERSION_NAME }} --json uploadUrl --jq '.uploadUrl') >> $GITHUB_ENV
+    - name: Create Release and Upload jar to Release
+      run: gh release create v${{ env.VERSION_NAME }} ./target/pinger-${{ env.VERSION_NAME }}.jar
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Upload jar to Release
-      run: gh release upload v${{ env.VERSION_NAME }} ./target/pinger-${{ env.VERSION_NAME }}.jar
-#      env:
-#        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
