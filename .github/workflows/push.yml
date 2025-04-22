@@ -31,18 +31,7 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-#    - name: Upload jar to Release
-#      id: upload-release-asset
-#      uses: actions/upload-release-asset@v1
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#      with:
-#        upload_url: ${{ env.UPLOAD_URL }}
-#        asset_path: ./target/pinger-${{ env.VERSION_NAME }}.jar
-#        asset_name: pinger-${{ env.VERSION_NAME }}.jar
-#        asset_content_type: application/zip
-
     - name: Upload jar to Release
       run: gh release upload v${{ env.VERSION_NAME }} ./target/pinger-${{ env.VERSION_NAME }}.jar
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      env:
+#        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
