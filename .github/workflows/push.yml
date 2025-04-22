@@ -26,12 +26,8 @@ jobs:
         echo VERSION_NAME=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec) >> $GITHUB_ENV
         echo ARTIFACT_ID=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.artifactId}' --non-recursive exec:exec) >> $GITHUB_ENV
         
-    - name: Test failure
+    - name: Fail if version is empty
       if: ${{ env.VERSION_NAME == '' }}
-      run: exit 1
-
-    - name: Test failure2
-      if: ${{ env.VERSION_NAME1 == '' }}
       run: exit 1
 
     - name: Create Release and Upload jar to Release
