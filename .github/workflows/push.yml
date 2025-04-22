@@ -27,7 +27,7 @@ jobs:
     - name: Create Release
       run: |
         gh release create v${{ env.VERSION_NAME }}
-        echo UPLOAD_URL=$(gh release view v${{ env.VERSION_NAME }} --json uploadUrl --jq '.uploadUrl') >> $GITHUB_ENV
+        echo UPLOAD_URL=$(gh release view v${{ env.VERSION_NAME }} --jq '.uploadUrl') >> $GITHUB_ENV
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
