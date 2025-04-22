@@ -21,10 +21,12 @@ jobs:
     - name: Build with Maven
       run: mvn package
 
-    - name: Extract Maven project version
-      run: echo VERSION_NAME=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec) >> $GITHUB_ENV
+    - name: Extract Maven project version and artifact id
+      run: |
+        echo VERSION_NAME=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec) >> $GITHUB_ENV
+        echo ARTIFACT_ID=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.artifactId}' --non-recursive exec:exec) >> $GITHUB_ENV
 
     - name: Create Release and Upload jar to Release
-      run: gh release create v${{ env.VERSION_NAME }} ./target/pinger-${{ env.VERSION_NAME }}.jar
+      run: gh release create v${{ env.VERSION_NAME }} ./target/${{ env.ARTIFACT_ID }}-${{ env.VERSION_NAME }}.jar
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
