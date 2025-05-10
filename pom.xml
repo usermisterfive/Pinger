@@ -6,7 +6,7 @@
 
  <groupId>org.usermisterfive</groupId>
  <artifactId>pinger</artifactId>
- <version>5.11.1</version>
+ <version>6.0.0</version>
 
  <properties>
   <maven.compiler.source>11</maven.compiler.source>
@@ -20,21 +20,33 @@
    <version>RELEASE</version>
    <scope>test</scope>
   </dependency>
+  <dependency>
+   <groupId>org.apache.logging.log4j</groupId>
+   <artifactId>log4j-api</artifactId>
+   <version>2.24.1</version>
+   <scope>compile</scope>
+  </dependency>
+  <dependency>
+   <groupId>org.apache.logging.log4j</groupId>
+   <artifactId>log4j-core</artifactId>
+   <version>2.24.1</version>
+   <scope>compile</scope>
+  </dependency>
  </dependencies>
  <build>
   <plugins>
    <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-jar-plugin</artifactId>
-    <version>3.1.0</version>
+    <artifactId>maven-assembly-plugin</artifactId>
     <configuration>
      <archive>
       <manifest>
-       <addClasspath>true</addClasspath>
-       <classpathPrefix>lib/</classpathPrefix>
        <mainClass>com.usermisterfive.Base</mainClass>
       </manifest>
      </archive>
+     <descriptorRefs>
+      <descriptorRef>jar-with-dependencies</descriptorRef>
+     </descriptorRefs>
+     <appendAssemblyId>false</appendAssemblyId>
     </configuration>
    </plugin>
   </plugins>
