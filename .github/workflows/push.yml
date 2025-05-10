@@ -19,7 +19,7 @@ jobs:
         cache: maven
 
     - name: Build with Maven
-      run: mvn package
+      run: mvn clean compile assembly:single
 
     - name: Extract Maven project version and artifact id
       run: |

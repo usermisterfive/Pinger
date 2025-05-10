@@ -12,17 +12,22 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Objects;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class Base {
+ private static final Logger LOGGER = LogManager.getLogger(Base.class);
  private static final String HOST = "1.1.1.1";
  private boolean running;
  private static final List<Integer> TIMEOUTS_LIST = List
    .of(1, 2, 3, 4, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 1000);
  private static final Image UNKNOWN_IMAGE = createImage("unknown.png");
 
- @SuppressWarnings({"ThrowablePrintedToSystemOut", "BusyWait"})
+ @SuppressWarnings("BusyWait")
  public static void main(String[] args) {
+  LOGGER.debug("enter");
+
   final Base base = new Base();
   base.setRunning(true);
   final Reachable reachable = Reachables.get();
@@ -37,19 +42,20 @@ public class Base {
   try {
    SystemTray.getSystemTray().add(trayIcon);
   } catch (AWTException awtException) {
-   System.out.println(awtException);
+   LOGGER.error("", awtException);
   }
 
   final int PAUSE = 1000;
   int pause1 = PAUSE;
 
   while (base.isRunning()) {
+   LOGGER.debug("enter while");
    int timeoutsSum = 0;
    try {
     Thread.sleep(pause1);
     timeoutsSum = testAndAssignImage(trayIcon, reachable);
    } catch(InterruptedException | IOException exception) {
-    System.out.println(exception);
+    LOGGER.error("", exception);
     trayIcon.setImage(UNKNOWN_IMAGE);
    }
    if (timeoutsSum > PAUSE) {
@@ -57,38 +63,45 @@ public class Base {
    } else {
     pause1 = PAUSE - timeoutsSum;
    }
+   LOGGER.debug("exit while");
   }
 
   SystemTray.getSystemTray().remove(trayIcon);
+  LOGGER.debug("exit");
  }
 
  private static boolean test(int timeout, Reachable reachable1)
    throws IOException {
+  LOGGER.debug("enter");
   boolean reachable;
   String reachableWord = "";
   reachable = reachable1.isReachable(HOST, 443, timeout);
   if (!reachable) {
    reachableWord = "not ";
   }
-  System.out.println(HOST + " is " + reachableWord + "reachable within "
-    + timeout + " ms");
+  LOGGER.debug("{} is {} reachable within {} ms",
+    HOST, reachableWord, timeout);
 
+  LOGGER.debug("exit");
   return reachable;
  }
 
  public static Image createImage(String path) {
+  LOGGER.debug("enter");
   URL imageURL = Base.class.getClassLoader().getResource(path);
-
+  Image image = null;
   if (imageURL == null) {
-   System.err.println("Resource not found: " + path);
-   return null;
+   LOGGER.error("Resource not found: {}", path);
   } else {
-   return (new ImageIcon(imageURL, "")).getImage();
+   image = (new ImageIcon(imageURL, "")).getImage();
   }
+  LOGGER.debug("exit");
+  return image;
  }
 
  private static int testAndAssignImage(TrayIcon trayIcon, Reachable reachable)
    throws IOException {
+  LOGGER.debug("enter");
   int timeoutsSum = 0;
 
   boolean isReached = false;
@@ -118,8 +131,8 @@ public class Base {
    }
   }
 
-  System.out.println("timeoutsSum=" + timeoutsSum);
-
+  LOGGER.debug("timeoutsSum={}", timeoutsSum);
+  LOGGER.debug("exit");
   return timeoutsSum;
  }
 
