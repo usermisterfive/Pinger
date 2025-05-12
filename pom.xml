@@ -6,7 +6,7 @@
 
  <groupId>org.usermisterfive</groupId>
  <artifactId>pinger</artifactId>
- <version>6.0.0</version>
+ <version>6.1.0</version>
 
  <properties>
   <maven.compiler.source>11</maven.compiler.source>
@@ -40,7 +40,7 @@
     <configuration>
      <archive>
       <manifest>
-       <mainClass>com.usermisterfive.Base</mainClass>
+       <mainClass>com.usermisterfive.pinger.Base</mainClass>
       </manifest>
      </archive>
      <descriptorRefs>

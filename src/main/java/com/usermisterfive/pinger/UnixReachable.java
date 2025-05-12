@@ -1,4 +1,4 @@
-package com.usermisterfive;
+package com.usermisterfive.pinger;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

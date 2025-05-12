@@ -1,4 +1,4 @@
-package com.usermisterfive;
+package com.usermisterfive.pinger;
 
 public class Reachables {
  static Reachable get() {
