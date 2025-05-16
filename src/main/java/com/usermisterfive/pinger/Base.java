@@ -49,7 +49,7 @@ public class Base {
   int pause1 = PAUSE;
 
   while (base.isRunning()) {
-   LOGGER.debug("enter while");
+   LOGGER.debug("while enter");
    int timeoutsSum = 0;
    try {
     Thread.sleep(pause1);
@@ -63,7 +63,7 @@ public class Base {
    } else {
     pause1 = PAUSE - timeoutsSum;
    }
-   LOGGER.debug("exit while");
+   LOGGER.debug("while exit");
   }
 
   SystemTray.getSystemTray().remove(trayIcon);
